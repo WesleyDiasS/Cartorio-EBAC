@@ -31,7 +31,7 @@ int registro() //Função responsável por cadastrar os usuários no sistema
 	scanf("%s", nome);
 	
 	file = fopen(arquivo, "a");
-	fprintf(file, nome);
+	fprintf(file, "%s", nome);
 	fclose(file);
 	
 	file = fopen(arquivo, "a");
@@ -42,7 +42,7 @@ int registro() //Função responsável por cadastrar os usuários no sistema
 	scanf("%s", sobrenome);
 	
 	file = fopen(arquivo, "a");
-	fprintf(file, sobrenome);
+	fprintf(file, "%s", sobrenome);
 	fclose(file);
 	
 	file = fopen(arquivo, "a");
@@ -53,7 +53,7 @@ int registro() //Função responsável por cadastrar os usuários no sistema
 	scanf("%s", cargo);
 	
 	file = fopen(arquivo, "a");
-	fprintf(file, cargo);
+	fprintf(file, "%s", cargo);
 	fclose(file);
 	
 	system("pause");//ele pausa o programa para o usuário conseguir ler e amensagem exibida
@@ -78,6 +78,8 @@ int consulta()//Função responsável por consultar os usuários no sistema
 	if(file == NULL)//Se a função file for exatamente igual a NULO
 	{
 		printf("Não foi possível abrir o arquivo, não localizado. \n");//mensagem a ser exibida par o usuário
+		system("pause");
+		return 0;
 	}
 	
 	while(fgets(conteudo, 200, file) != NULL)//enquanto ele for diferente de NULO ele continua escrevendo
@@ -87,30 +89,43 @@ int consulta()//Função responsável por consultar os usuários no sistema
 		printf("\n\n");//\n pula linha
 	}
 	
+	fclose(file);
+	
 	system("pause");//ele pausa o programa para o usuário conseguir ler e amensagem exibida
 	
 }
 
-int deletar()//Função responsável por deletar os usuários no sistema
+int deletar()
 {
-	//inicio da criação das variáveis/strings
-	char cpf[40];
-	//fim da criação das variáveis/strings
-	
-	
-	printf("Digite o CPF do usuário a ser deletado: ");//Coletando informaçõa do usuário
-	scanf("%s", cpf);//%s armazena dentro de uma string
-	
-	remove(cpf);//remove CPF cadastrado 
-	
-	FILE * file;//Criando arquivo chamado file
-	file = fopen(cpf, "r");//"r" é de READ (ler em inglês)
-	
-	if(file == NULL)//Se a função file for exatamente igual a NULO
-	{
-		printf("O usuário não se encontra no sistema. \n");//mensagem a ser exibida par o usuário
-		system("pause");//ele pausa o programa para o usuário conseguir ler e amensagem exibida
-	}
+    char cpf[40];
+
+    printf("Digite o CPF do usuário a ser deletado: ");
+    scanf("%s", cpf);
+
+    FILE *file;
+
+    file = fopen(cpf, "r");
+
+    if(file == NULL)
+    {
+        printf("O usuário nao se encontra no sistema.\n");
+    }
+    else
+    {
+        fclose(file);
+
+        if(remove(cpf) == 0)
+        {
+            printf("Usuario deletado com sucesso.\n");
+        }
+        else
+        {
+            printf("Erro ao deletar usuario.\n");
+        }
+    }
+
+    system("pause");
+    return 0;
 }
 
 #include <stdio.h>
@@ -119,7 +134,7 @@ int deletar()//Função responsável por deletar os usuários no sistema
 
 int main ()
 {
-	int opcao=0;
+	int opcao=0;//definindo variaveis
 	int laco=1;
 	char senhadigitada[10] = "a";
 	int comparacao;
@@ -127,7 +142,7 @@ int main ()
 	
 	printf("### Cartório da EBAC ###\n\n");
 	printf("Login de administrador!\n\nDigite a sua senha: ");
-	scanf("%s", senhadigitada);
+	scanf("%s", senhadigitada);//%s é uma string e salva dentro da variavel "senhadigitada"
 	
 	comparacao = strcmp(senhadigitada, "admin");
 	
@@ -172,6 +187,7 @@ int main ()
 				printf("\nEssa opção não está disponível!\n\n");
 				system("pause");
 				break;
+				//fim da seleção
 			}
 		}
 	}
